@@ -1,15 +1,11 @@
-// DEFAULT name (so it works without URL)
+// Default name
 let name = "Samia Rahman";
 
-// If a URL has ?name=XYZ it will override the default:
-const params = new URLSearchParams(window.location.search);
-if (params.get('name')) name = params.get('name');
-
-// Put the birthday heading
+// Heading
 const nameElem = document.getElementById('birthdayName');
 if (nameElem) nameElem.textContent = `Happy Birthday ${name}!`;
 
-// Typewriter function (used on message page)
+// Typewriter function
 function runTypewriter(message, targetId, delay = 50, startDelay = 800) {
   const target = document.getElementById(targetId);
   if (!target) return;
@@ -24,16 +20,11 @@ function runTypewriter(message, targetId, delay = 50, startDelay = 800) {
   }, startDelay);
 }
 
-// Confetti on load using canvas-confetti library (if available)
+// Confetti
 function burstConfetti() {
   if (typeof confetti === "function") {
-    confetti({
-      particleCount: 220,
-      spread: 140,
-      origin: { y: 0.6 }
-    });
+    confetti({ particleCount: 220, spread: 140, origin: { y: 0.6 } });
   } else {
-    // fallback: create small div confetti for older browsers (not perfect)
     for (let i=0;i<60;i++){
       const c = document.createElement('div');
       c.className = 'confetti-piece';
@@ -55,25 +46,16 @@ function revealSurprise() {
   burstConfetti();
 }
 
-// Called when message page loads
+// Start message
 function startMessage() {
-  // Nice longer message for typewriter
   const message = `Dear ${name},\nWishing you a magical birthday filled with joy, laughter, and beautiful moments! 🎉`;
   runTypewriter(message, 'typewriter', 40, 600);
   burstConfetti();
 }
 
-// If we are on the message page, start everything
+// Run only on message page
 if (document.body.classList.contains('message-page')) {
-  // set heading (already done above but ensures it's present)
-  if (nameElem) nameElem.textContent = `Happy Birthday ${name}!`;
-
-  // run start after DOM is ready
   window.addEventListener('DOMContentLoaded', startMessage);
-
-  // surprise button
   const btn = document.getElementById('surpriseBtn');
-  if (btn) {
-    btn.addEventListener('click', revealSurprise);
-  }
+  if (btn) btn.addEventListener('click', revealSurprise);
 }
